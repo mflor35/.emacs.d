@@ -215,9 +215,3 @@
 ;; Navigating Directories
 (require 'neotree)
 (global-set-key [f8] 'neotree-toggle)
-
-;; ergoemacs
-(require 'ergoemacs-mode)
-(setq ergoemacs-theme nil) ;; Uses Standard Ergoemacs keyboard theme
-(setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
-(ergoemacs-mode 1)
