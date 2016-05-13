@@ -214,6 +214,7 @@
 ;; Navigating Directories
 (require 'neotree)
 (global-set-key [f8] 'neotree-toggle)
+<<<<<<< HEAD
 
 ;; Smartparents
 (require 'smartparens-config)
@@ -225,3 +226,5 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+=======
+>>>>>>> 8362d9afecc413861ea71651be3a28aa0a049e71
