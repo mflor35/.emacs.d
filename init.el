@@ -113,6 +113,7 @@
  '(package-selected-packages
    (quote
     (markdown-preview-mode markdown-preview-eww use-package temp-buffer-browse switch-window sublime-themes smartparens rsense python-mode python-info pylint py-smart-operator popwin persistent-soft olivetti neotree markdown-mode irony-eldoc iedit hydra gh-md flyspell-popup flyspell-lazy flymake-ruby flymake-python-pyflakes flycheck flatui-theme flatland-theme flatland-black-theme evil-nerd-commenter evil-leader ergoemacs-mode emacs-eclim elpy company-irony-c-headers company-irony company-inf-ruby autopair auto-complete-chunk auto-complete-c-headers atom-one-dark-theme atom-dark-theme ample-theme ac-php ac-octave ac-html-bootstrap ac-clang ac-c-headers)))
+ '(safe-local-variable-values (quote ((rpm-change-log-uses-utc . t))))
  '(vc-annotate-background "#1f2124")
  '(vc-annotate-color-map
    (quote
@@ -181,9 +182,8 @@
 (elpy-enable)
 
 ;; flyspell
-(require 'flyspell-lazy)
-(flyspell-lazy-mode 1)
-(flyspell-mode 1)
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
 ;; Ruby mode
 (require 'rsense)
 (add-to-list 'auto-mode-alist
@@ -214,8 +214,6 @@
 ;; Navigating Directories
 (require 'neotree)
 (global-set-key [f8] 'neotree-toggle)
-<<<<<<< HEAD
-
 ;; Smartparents
 (require 'smartparens-config)
 (smartparens-global-mode)
@@ -226,5 +224,3 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-=======
->>>>>>> 8362d9afecc413861ea71651be3a28aa0a049e71
