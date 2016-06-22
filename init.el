@@ -21,6 +21,16 @@
 ;; End packages
 
 ;; General Configuration
+;; Fill column indicator
+;;(load-file "~/.emacs.d/fill-column-indicator.el")
+;;(require 'fill-column-indicator)
+;;(add-hook 'after-change-major-mode-hook 'fci-mode)
+;;(setq fci-rule-width 3)
+;;(setq fci-rule-color "white")
+(require 'whitespace)
+(setq whitespace-line-column 80)
+(setq whitespace-style '(face lines-tail))
+(add-hook 'prog-mode-hook 'whitespace-mode)
 ;; Truncate Lines
 ;; No startup message
 (setq inhibit-startup-message t
@@ -40,6 +50,8 @@
 (column-number-mode t)
 ;; No backups
 (setq backup-inhibitied t)
+;; Disable auto-save
+(setq auto-save-default nil)
 ;; Mouse scroll one line at a time
 (setq mouse-wheel-follow-mouse 't)
 ;; Keyboard scroll one line at a time
@@ -104,16 +116,22 @@
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
- '(custom-enabled-themes (quote (ample)))
+ '(custom-enabled-themes (quote (flatland)))
  '(custom-safe-themes
    (quote
     ("12b4427ae6e0eef8b870b450e59e75122d5080016a9061c9696959e50d578057" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" "3b24f986084001ae46aa29ca791d2bc7f005c5c939646d2b800143526ab4d323" "9122dfb203945f6e84b0de66d11a97de6c9edf28b3b5db772472e4beccc6b3c5" "a2e7b508533d46b701ad3b055e7c708323fb110b6676a8be458a758dd8f24e27" "46fd293ff6e2f6b74a5edf1063c32f2a758ec24a5f63d13b07a20255c074d399" "3cd28471e80be3bd2657ca3f03fbb2884ab669662271794360866ab60b6cb6e6" "3cc2385c39257fed66238921602d8104d8fd6266ad88a006d0a4325336f5ee02" "e9776d12e4ccb722a2a732c6e80423331bcb93f02e089ba2a4b02e85de1cf00e" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "96998f6f11ef9f551b427b8853d947a7857ea5a578c75aa9c4e7c73fe04d10b4" "0c29db826418061b40564e3351194a3d4a125d182c6ee5178c237a7364f0ff12" "7bde52fdac7ac54d00f3d4c559f2f7aa899311655e7eb20ec5491f3b5c533fe8" "b3775ba758e7d31f3bb849e7c9e48ff60929a792961a2d536edec8f68c671ca5" "90d329edc17c6f4e43dbc67709067ccd6c0a3caa355f305de2041755986548f2" "91faf348ce7c8aa9ec8e2b3885394263da98ace3defb23f07e0ba0a76d427d46" default)))
  '(fci-rule-color "#202325")
+ '(hl-paren-background-colors (quote ("#2492db" "#95a5a6" nil)))
+ '(hl-paren-colors (quote ("#ecf0f1" "#ecf0f1" "#c0392b")))
  '(linum-format " %7i ")
  '(package-selected-packages
    (quote
     (markdown-preview-mode markdown-preview-eww use-package temp-buffer-browse switch-window sublime-themes smartparens rsense python-mode python-info pylint py-smart-operator popwin persistent-soft olivetti neotree markdown-mode irony-eldoc iedit hydra gh-md flyspell-popup flyspell-lazy flymake-ruby flymake-python-pyflakes flycheck flatui-theme flatland-theme flatland-black-theme evil-nerd-commenter evil-leader ergoemacs-mode emacs-eclim elpy company-irony-c-headers company-irony company-inf-ruby autopair auto-complete-chunk auto-complete-c-headers atom-one-dark-theme atom-dark-theme ample-theme ac-php ac-octave ac-html-bootstrap ac-clang ac-c-headers)))
  '(safe-local-variable-values (quote ((rpm-change-log-uses-utc . t))))
+ '(sml/active-background-color "#34495e")
+ '(sml/active-foreground-color "#ecf0f1")
+ '(sml/inactive-background-color "#dfe4ea")
+ '(sml/inactive-foreground-color "#34495e")
  '(vc-annotate-background "#1f2124")
  '(vc-annotate-color-map
    (quote
