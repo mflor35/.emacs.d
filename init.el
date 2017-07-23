@@ -1,7 +1,7 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-;;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
 
@@ -9,43 +9,25 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; customize window title
-(setq frame-title-format "emacs")
 (eval-when-compile
   (require 'use-package))
 (require 'diminish)
-(require 'bind-key);; Melpa packages
-(require 'package)
-(package-initialize)
-(add-to-list 'package-archives '("melpa"."http://melpa.milkbox.net/packages/") t)
-;; End packages
-
+(require 'bind-key)
 ;; General Configuration
-;; Fill column indicator
-;;(load-file "~/.emacs.d/fill-column-indicator.el")
-;;(require 'fill-column-indicator)
-;;(add-hook 'after-change-major-mode-hook 'fci-mode)
-;;(setq fci-rule-width 3)
-;;(setq fci-rule-color "white")
-(require 'whitespace)
-(setq whitespace-line-column 80)
-(setq whitespace-style '(face lines-tail))
-(add-hook 'prog-mode-hook 'whitespace-mode)
-;; Truncate Lines
 ;; No startup message
 (setq inhibit-startup-message t
       truncate-lines t
       default-truncate-lines t
       user-full-name "Miguel Flores Silverio"
       user-mail-address "floresmigu3l@gmail.com")
-;; Start emacs full screen
-;;(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;;Start emacs full screen
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; UTF-8 encoding for everything
 (prefer-coding-system 'utf-8)
 ;; No tool bar
 (tool-bar-mode -1)
 ;; No menu bar
-;;(menu-bar-mode -1)
+(menu-bar-mode -1)
 ;; Show column number
 (column-number-mode t)
 ;; No backups
@@ -119,14 +101,14 @@
  '(custom-enabled-themes (quote (flatland)))
  '(custom-safe-themes
    (quote
-    ("12b4427ae6e0eef8b870b450e59e75122d5080016a9061c9696959e50d578057" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" "3b24f986084001ae46aa29ca791d2bc7f005c5c939646d2b800143526ab4d323" "9122dfb203945f6e84b0de66d11a97de6c9edf28b3b5db772472e4beccc6b3c5" "a2e7b508533d46b701ad3b055e7c708323fb110b6676a8be458a758dd8f24e27" "46fd293ff6e2f6b74a5edf1063c32f2a758ec24a5f63d13b07a20255c074d399" "3cd28471e80be3bd2657ca3f03fbb2884ab669662271794360866ab60b6cb6e6" "3cc2385c39257fed66238921602d8104d8fd6266ad88a006d0a4325336f5ee02" "e9776d12e4ccb722a2a732c6e80423331bcb93f02e089ba2a4b02e85de1cf00e" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "96998f6f11ef9f551b427b8853d947a7857ea5a578c75aa9c4e7c73fe04d10b4" "0c29db826418061b40564e3351194a3d4a125d182c6ee5178c237a7364f0ff12" "7bde52fdac7ac54d00f3d4c559f2f7aa899311655e7eb20ec5491f3b5c533fe8" "b3775ba758e7d31f3bb849e7c9e48ff60929a792961a2d536edec8f68c671ca5" "90d329edc17c6f4e43dbc67709067ccd6c0a3caa355f305de2041755986548f2" "91faf348ce7c8aa9ec8e2b3885394263da98ace3defb23f07e0ba0a76d427d46" default)))
+    ("938d8c186c4cb9ec4a8d8bc159285e0d0f07bad46edf20aa469a89d0d2a586ea" "12b4427ae6e0eef8b870b450e59e75122d5080016a9061c9696959e50d578057" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" "3b24f986084001ae46aa29ca791d2bc7f005c5c939646d2b800143526ab4d323" "9122dfb203945f6e84b0de66d11a97de6c9edf28b3b5db772472e4beccc6b3c5" "a2e7b508533d46b701ad3b055e7c708323fb110b6676a8be458a758dd8f24e27" "46fd293ff6e2f6b74a5edf1063c32f2a758ec24a5f63d13b07a20255c074d399" "3cd28471e80be3bd2657ca3f03fbb2884ab669662271794360866ab60b6cb6e6" "3cc2385c39257fed66238921602d8104d8fd6266ad88a006d0a4325336f5ee02" "e9776d12e4ccb722a2a732c6e80423331bcb93f02e089ba2a4b02e85de1cf00e" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "96998f6f11ef9f551b427b8853d947a7857ea5a578c75aa9c4e7c73fe04d10b4" "0c29db826418061b40564e3351194a3d4a125d182c6ee5178c237a7364f0ff12" "7bde52fdac7ac54d00f3d4c559f2f7aa899311655e7eb20ec5491f3b5c533fe8" "b3775ba758e7d31f3bb849e7c9e48ff60929a792961a2d536edec8f68c671ca5" "90d329edc17c6f4e43dbc67709067ccd6c0a3caa355f305de2041755986548f2" "91faf348ce7c8aa9ec8e2b3885394263da98ace3defb23f07e0ba0a76d427d46" default)))
  '(fci-rule-color "#202325")
  '(hl-paren-background-colors (quote ("#2492db" "#95a5a6" nil)))
  '(hl-paren-colors (quote ("#ecf0f1" "#ecf0f1" "#c0392b")))
  '(linum-format " %7i ")
  '(package-selected-packages
    (quote
-    (magit markdown-preview-mode markdown-preview-eww use-package temp-buffer-browse switch-window sublime-themes smartparens rsense python-mode python-info pylint py-smart-operator popwin persistent-soft olivetti neotree markdown-mode irony-eldoc iedit hydra gh-md flyspell-popup flyspell-lazy flymake-ruby flymake-python-pyflakes flycheck flatui-theme flatland-theme flatland-black-theme evil-nerd-commenter evil-leader ergoemacs-mode emacs-eclim elpy company-irony-c-headers company-irony company-inf-ruby autopair auto-complete-chunk auto-complete-c-headers atom-one-dark-theme atom-dark-theme ample-theme ac-php ac-octave ac-html-bootstrap ac-clang ac-c-headers)))
+    (magit markdown-preview-mode markdown-preview-eww temp-buffer-browse switch-window sublime-themes smartparens python-mode python-info pylint py-smart-operator popwin persistent-soft olivetti neotree markdown-mode irony-eldoc iedit hydra gh-md flyspell-popup flyspell-lazy flymake-ruby flymake-python-pyflakes flycheck flatui-theme flatland-theme flatland-black-theme evil-nerd-commenter evil-leader ergoemacs-mode emacs-eclim elpy company-irony-c-headers company-irony company-inf-ruby autopair auto-complete-chunk auto-complete-c-headers atom-one-dark-theme atom-dark-theme ample-theme ac-php ac-octave ac-html-bootstrap ac-clang ac-c-headers)))
  '(safe-local-variable-values (quote ((rpm-change-log-uses-utc . t))))
  '(sml/active-background-color "#34495e")
  '(sml/active-foreground-color "#ecf0f1")
@@ -202,19 +184,6 @@
 ;; flyspell
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-;; Ruby mode
-(require 'rsense)
-(add-to-list 'auto-mode-alist
-	     '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
-(add-to-list 'auto-mode-alist
-	    '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
-(global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
-(add-hook 'ruby-mode-hook
-	  (lambda ()
-	    (add-to-list 'ac-sources 'ac-source-rsense-method)
-	    (add-to-list 'ac-sources 'ac-source-rsense-constant)))
-(require 'flymake-ruby)
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
 ;; Commenting Code
 (require 'evil-leader)
@@ -247,8 +216,8 @@
   "modify the transparency of the emacs frame; if DEC is t,
     decrease the transparency, otherwise increase it in 10%-steps"
   (let* ((alpha-or-nil (frame-parameter nil 'alpha)) ; nil before setting
-          (oldalpha (if alpha-or-nil alpha-or-nil 100))
-          (newalpha (if dec (- oldalpha 10) (+ oldalpha 10))))
+	  (oldalpha (if alpha-or-nil alpha-or-nil 100))
+	  (newalpha (if dec (- oldalpha 10) (+ oldalpha 10))))
     (when (and (>= newalpha frame-alpha-lower-limit) (<= newalpha 100))
       (modify-frame-parameters nil (list (cons 'alpha newalpha))))))
 
@@ -258,4 +227,16 @@
 (global-set-key (kbd "C-8") '(lambda()(interactive)(djcb-opacity-modify)))
 (global-set-key (kbd "C-9") '(lambda()(interactive)(djcb-opacity-modify t)))
 (global-set-key (kbd "C-0") '(lambda()(interactive)
-                               (modify-frame-parameters nil `((alpha . 100)))))
+			       (modify-frame-parameters nil `((alpha . 100)))))
+
+;; CMAKE files
+;; Add cmake listfile names to the mode list.
+(setq load-path (cons (expand-file-name "cmake-mode") load-path))
+(require 'cmake-mode)
+(setq auto-mode-alist
+	  (append
+	   '(("CMakeLists\\.txt\\'" . cmake-mode))
+	   '(("\\.cmake\\'" . cmake-mode))
+	   auto-mode-alist))
+
+(autoload 'cmake-mode "cmake-mode.el" t)
