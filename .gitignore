@@ -1,5 +1,9 @@
 *~
 [Bb]in/
+[Bb]uild/
 *.o
 *.a
 *.so
+*__pycache__/
+*.pyc
+*.elc
