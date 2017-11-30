@@ -1,25 +1,21 @@
+;;; package --- Load all packages
+;;; Commentary:
 (require 'package)
+;;; code:
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(eval-when-compile
-  (require 'use-package))
 (require 'diminish)
 (require 'bind-key)
 ;; General Configuration
 ;; No startup message
 (setq inhibit-startup-message t
       truncate-lines t
-      default-truncate-lines t
-      user-full-name "Miguel Flores Silverio"
-      user-mail-address "floresmigu3l@gmail.com")
+      user-full-name "Miguel Flores Silverio")
+(visual-line-mode t)
 ;;Start emacs full screen
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; UTF-8 encoding for everything
@@ -31,7 +27,7 @@
 ;; Show column number
 (column-number-mode t)
 ;; No backups
-(setq backup-inhibitied t)
+(setq backup-inhibited t)
 ;; Disable auto-save
 (setq auto-save-default nil)
 ;; Mouse scroll one line at a time
@@ -50,8 +46,17 @@
 (setq minibuffer-prompt-properties
       (quote (read-only t point-entered minibuffer-avoid-prompt
 			face minibuffer-prompt)))
- ;; Navigate between windows using Alt-1, Alt-2, Shift-left, shift-up, shift-right
- (windmove-default-keybindings)
+;; Navigate between windows using Alt-1, Alt-2, Shift-left, shift-up, shift-right
+(windmove-default-keybindings)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Key shortcuts and keybindings
+(require 'xah-fly-keys)
+(xah-fly-keys-set-layout "qwerty") ; required if you use qwerty
+(xah-fly-keys 1)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'which-key)
+(which-key-mode)
+(setq which-key-popup-type 'minibuffer)
 ;; Font lock customization
 ;; -----------------------
 ;; This is an attempt to provide a pleasing, sane and reasonably consistent
@@ -64,9 +69,9 @@
 (defun font-lock-mode-setup ()
   "Make fixme tags standout."
   (font-lock-add-keywords nil
-   '(("\\<\\(AEK\\|NOTE\\|FIXME\\|TODO\\|XXX\\)\\>:?" 0 'font-lock-warning-face prepend))))
+			  '(("\\<\\(AEK\\|NOTE\\|FIXME\\|TODO\\|XXX\\)\\>:?" 0 'font-lock-warning-face prepend))))
 (defun set-colour-theme (theme)
-  "Helper function to set a bunch of faces and ignore potential errors from missing faces."
+  "THEME Helper function to set a bunch of faces and ignore potential errors from missing faces."
   (mapc (lambda (setting)
 	  (condition-case nil
 	      (face-spec-set (car setting) (cdr setting))
@@ -108,8 +113,51 @@
  '(linum-format " %7i ")
  '(package-selected-packages
    (quote
-    (magit markdown-preview-mode markdown-preview-eww temp-buffer-browse switch-window sublime-themes smartparens python-mode python-info pylint py-smart-operator popwin persistent-soft olivetti neotree markdown-mode irony-eldoc iedit hydra gh-md flyspell-popup flyspell-lazy flymake-ruby flymake-python-pyflakes flycheck flatui-theme flatland-theme flatland-black-theme evil-nerd-commenter evil-leader ergoemacs-mode emacs-eclim elpy company-irony-c-headers company-irony company-inf-ruby autopair auto-complete-chunk auto-complete-c-headers atom-one-dark-theme atom-dark-theme ample-theme ac-php ac-octave ac-html-bootstrap ac-clang ac-c-headers)))
- '(safe-local-variable-values (quote ((rpm-change-log-uses-utc . t))))
+    (cmake-mode
+     which-key
+     xah-fly-keys
+     flycheck-irony
+     magit
+     temp-buffer-browse
+     switch-window
+     sublime-themes
+     smartparens
+     python-mode
+     python-info
+     pylint
+     py-smart-operator
+     popwin
+     neotree
+     irony-eldoc
+     iedit
+     hydra
+     flyspell-popup
+     flyspell-lazy
+     flymake-ruby
+     flymake-python-pyflakes
+     flycheck
+     flatui-theme
+     flatland-theme
+     flatland-black-theme
+     evil-nerd-commenter
+     evil-leader
+     ergoemacs-mode
+     emacs-eclim
+     elpy
+     company-irony-c-headers
+     company-irony
+     company-inf-ruby
+     autopair
+     auto-complete-chunk
+     auto-complete-c-headers
+     atom-one-dark-theme
+     atom-dark-theme
+     ample-theme)))
+ '(safe-local-variable-values
+   (quote
+    ((flycheck-clang-language-standard . C++11)
+     (flycheck-clang-language-standard . c++11)
+     (rpm-change-log-uses-utc . t))))
  '(sml/active-background-color "#34495e")
  '(sml/active-foreground-color "#ecf0f1")
  '(sml/inactive-background-color "#dfe4ea")
@@ -145,39 +193,54 @@
 ;; End general config
 ;; Flycheck
 (require 'flycheck)
-(define-key flycheck-mode-map (kbd "C-c C-n") #'flycheck-next-error)
-(define-key flycheck-mode-map (kbd "C-c C-p") #'flycheck-previous-error)
+(global-flycheck-mode)
 
-;; C/C++ Mode
-;; disable Semantic in all non-cc-mode buffers.
-(setq semantic-inhibit-functions
-      (list (lambda () (not (and (featurep 'cc-defs)
-			    c-buffer-is-cc-mode)))))
 ;;; IRONY TRUE AUTO COMPLETE
-;; == irony-mode ==
-(use-package irony
-  :ensure t
-  :defer t
-  :init
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-  :config
-  ;; replace the `completion-at-point' and `complete-symbol' bindings in
-  ;; irony-mode's buffers by irony-mode's function
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; irony c++
+(defun mf-c-c++-setup()
+  (irony-mode +1)
+  (setq irony-additional-clang-options '("-std=c++11"))
+  (electric-operator-mode +1)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-hook 'irony-mode-hook 'electric-operator-mode)
+  (add-hook 'irony-mode-hook #'irony-eldoc)
+  (add-hook 'irony-mode-hook 'flycheck-mode)
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  (add-hook 'irony-mode-hook
+	    (lambda ()
+	      (rtags-diagnostics)
+	      (rtags-start-process-unless-running)))
+  (define-key irony-mode-map (kbd "M-.")
+    '(lambda () (interactive) (ring-insert find-tag-marker-ring (point-marker))
+       (rtags-find-symbol-at-point)))
+  (define-key irony-mode-map (kbd "M-,") 'xref-pop-marker-stack)
   )
+(require 'xref)
+(require 'cc-mode)
+(require 'irony)
+(require 'company)
+(add-to-list 'company-backends 'company-irony)
+(add-to-list 'company-backends 'company-c-headers)
+(add-to-list 'company-backends 'company-rtags)
+(add-hook 'c++-mode-hook 'mf-c-c++-setup)
+(add-hook 'c-mode-hook 'mf-c-c++-setup)
+(add-hook 'objc-mode-hook 'mf-c-c++setup)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; rtags
+(require 'rtags)
+(setq rtags-path "~/.emacs.d/elpa/rtags-20171027.1028/rtags-2.15/bin")
+
+(setq rtags-autostart-diagnostics t)
+(setq rtags-completions-enabled t)
 
 ;; == company-mode ==
 (add-hook 'after-init-hook 'global-company-mode)
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-irony))
+
 ;; Python (elpy)
 (elpy-enable)
 
@@ -204,10 +267,17 @@
 ;; Smartparents
 (require 'smartparens-config)
 (smartparens-global-mode)
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Eldoc
+(require 'eldoc)
+(setq eldoc-idle-delay 0.1)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; electric-operator-modeRATE
+(require 'electric-operator)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Markdown
 (autoload 'markdown-mode "markdown-mode"
-   "Major mode for editing Markdown files" t)
+  "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
@@ -216,14 +286,14 @@
   "modify the transparency of the emacs frame; if DEC is t,
     decrease the transparency, otherwise increase it in 10%-steps"
   (let* ((alpha-or-nil (frame-parameter nil 'alpha)) ; nil before setting
-	  (oldalpha (if alpha-or-nil alpha-or-nil 100))
-	  (newalpha (if dec (- oldalpha 10) (+ oldalpha 10))))
+	 (oldalpha (if alpha-or-nil alpha-or-nil 100))
+	 (newalpha (if dec (- oldalpha 10) (+ oldalpha 10))))
     (when (and (>= newalpha frame-alpha-lower-limit) (<= newalpha 100))
       (modify-frame-parameters nil (list (cons 'alpha newalpha))))))
 
- ;; C-8 will increase opacity (== decrease transparency)
- ;; C-9 will decrease opacity (== increase transparency
- ;; C-0 will returns the state to normal
+;; C-8 will increase opacity (== decrease transparency)
+;; C-9 will decrease opacity (== increase transparency
+;; C-0 will returns the state to normal
 (global-set-key (kbd "C-8") '(lambda()(interactive)(djcb-opacity-modify)))
 (global-set-key (kbd "C-9") '(lambda()(interactive)(djcb-opacity-modify t)))
 (global-set-key (kbd "C-0") '(lambda()(interactive)
@@ -234,9 +304,10 @@
 (setq load-path (cons (expand-file-name "cmake-mode") load-path))
 (require 'cmake-mode)
 (setq auto-mode-alist
-	  (append
-	   '(("CMakeLists\\.txt\\'" . cmake-mode))
-	   '(("\\.cmake\\'" . cmake-mode))
-	   auto-mode-alist))
+      (append
+       '(("CMakeLists\\.txt\\'" . cmake-mode))
+       '(("\\.cmake\\'" . cmake-mode))
+       auto-mode-alist))
 
 (autoload 'cmake-mode "cmake-mode.el" t)
+;;; init.el ends here
