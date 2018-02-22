@@ -113,46 +113,7 @@
  '(linum-format " %7i ")
  '(package-selected-packages
    (quote
-    (cmake-mode
-     which-key
-     xah-fly-keys
-     flycheck-irony
-     magit
-     temp-buffer-browse
-     switch-window
-     sublime-themes
-     smartparens
-     python-mode
-     python-info
-     pylint
-     py-smart-operator
-     popwin
-     neotree
-     irony-eldoc
-     iedit
-     hydra
-     flyspell-popup
-     flyspell-lazy
-     flymake-ruby
-     flymake-python-pyflakes
-     flycheck
-     flatui-theme
-     flatland-theme
-     flatland-black-theme
-     evil-nerd-commenter
-     evil-leader
-     ergoemacs-mode
-     emacs-eclim
-     elpy
-     company-irony-c-headers
-     company-irony
-     company-inf-ruby
-     autopair
-     auto-complete-chunk
-     auto-complete-c-headers
-     atom-one-dark-theme
-     atom-dark-theme
-     ample-theme)))
+    (all-the-icons tide cmake-mode which-key xah-fly-keys flycheck-irony magit temp-buffer-browse switch-window sublime-themes smartparens python-mode python-info pylint py-smart-operator popwin neotree irony-eldoc iedit hydra flyspell-popup flyspell-lazy flymake-ruby flymake-python-pyflakes flycheck flatui-theme flatland-theme flatland-black-theme evil-nerd-commenter evil-leader ergoemacs-mode emacs-eclim elpy company-irony-c-headers company-irony company-inf-ruby autopair auto-complete-chunk auto-complete-c-headers atom-one-dark-theme atom-dark-theme ample-theme)))
  '(safe-local-variable-values
    (quote
     ((flycheck-clang-language-standard . C++11)
@@ -262,8 +223,10 @@
   "\\" 'evilnc-comment-operator
   )
 ;; Navigating Directories
+(require 'all-the-icons)
 (require 'neotree)
-(global-set-key [f8] 'neotree-toggle)
+(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+(global-set-key [f10] 'neotree-toggle)
 ;; Smartparents
 (require 'smartparens-config)
 (smartparens-global-mode)
@@ -310,4 +273,27 @@
        auto-mode-alist))
 
 (autoload 'cmake-mode "cmake-mode.el" t)
+
+;; TypeScript
+(require 'tide)
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+(add-hook 'before-save-hook 'tide-format-before-save)
+
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+
 ;;; init.el ends here
