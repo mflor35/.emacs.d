@@ -3,9 +3,6 @@
 (require 'package)
 ;;; code:
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
 
 (require 'diminish)
@@ -49,17 +46,6 @@
 ;; Navigate between windows using Alt-1, Alt-2, Shift-left, shift-up, shift-right
 (windmove-default-keybindings)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq exec-path (append exec-path '("/usr/local/bin"
-				    "/usr/bin"
-				    "/usr/local/opt/node@8/bin")))
-;; Key shortcuts and keybindings
-(require 'xah-fly-keys)
-(xah-fly-keys-set-layout "qwerty") ; required if you use qwerty
-(xah-fly-keys 1)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'which-key)
-(which-key-mode)
-(setq which-key-popup-type 'minibuffer)
 ;; Look and Feel
 (require 'doom-themes)
 
@@ -101,22 +87,6 @@
 	    (error t)))
 	theme))
 
-;; Prettify by Gopar!
-(show-paren-mode t)
-(set-face-background 'show-paren-match-face "#aaaaaa")
-(set-face-attribute 'show-paren-match-face nil
-		    :weight 'bold :underline nil :overline nil :slant 'normal)
-(set-face-foreground 'show-paren-mismatch-face "red")
-(set-face-attribute 'show-paren-mismatch-face nil
-		    :weight 'bold :underline t :overline nil :slant 'normal)
-;; make stuff pretty :D
-(add-hook 'prog-mode-hook
-	  (lambda ()
-	    (push '(">=" . ?≥) prettify-symbols-alist)
-	    (push '("<=" . ?≤) prettify-symbols-alist)
-	    (push '("->" . ?→) prettify-symbols-alist)))
-;; Global mode for it
-(global-prettify-symbols-mode +1)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -126,6 +96,7 @@
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
+ '(column-number-mode t)
  '(custom-enabled-themes (quote (doom-vibrant)))
  '(custom-safe-themes
    (quote
@@ -146,6 +117,7 @@
  '(sml/active-foreground-color "#ecf0f1")
  '(sml/inactive-background-color "#dfe4ea")
  '(sml/inactive-foreground-color "#34495e")
+ '(tool-bar-mode nil)
  '(vc-annotate-background "#1f2124")
  '(vc-annotate-color-map
    (quote
@@ -179,51 +151,8 @@
 (require 'flycheck)
 (global-flycheck-mode)
 
-;;; IRONY TRUE AUTO COMPLETE
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; irony c++
-(defun mf-c-c++-setup()
-  (irony-mode +1)
-  (setq irony-additional-clang-options '("-std=c++11"))
-  (electric-operator-mode +1)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-hook 'irony-mode-hook 'electric-operator-mode)
-  (add-hook 'irony-mode-hook #'irony-eldoc)
-  (add-hook 'irony-mode-hook 'flycheck-mode)
-  (eval-after-load 'flycheck
-    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-  (add-hook 'irony-mode-hook
-	    (lambda ()
-	      (rtags-diagnostics)
-	      (rtags-start-process-unless-running)))
-  (define-key irony-mode-map (kbd "M-.")
-    '(lambda () (interactive) (ring-insert find-tag-marker-ring (point-marker))
-       (rtags-find-symbol-at-point)))
-  (define-key irony-mode-map (kbd "M-,") 'xref-pop-marker-stack)
-  )
-(require 'xref)
-(require 'cc-mode)
-(require 'irony)
-(require 'company)
-(add-to-list 'company-backends 'company-irony)
-(add-to-list 'company-backends 'company-c-headers)
-(add-to-list 'company-backends 'company-rtags)
-(add-hook 'c++-mode-hook 'mf-c-c++-setup)
-(add-hook 'c-mode-hook 'mf-c-c++-setup)
-(add-hook 'objc-mode-hook 'mf-c-c++setup)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; rtags
-(require 'rtags)
-(setq rtags-path "~/.emacs.d/elpa/rtags-20171027.1028/rtags-2.15/bin")
-
-(setq rtags-autostart-diagnostics t)
-(setq rtags-completions-enabled t)
-
 ;; == company-mode ==
 (add-hook 'after-init-hook 'global-company-mode)
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-irony))
 
 ;; Python (elpy)
 (elpy-enable)
@@ -232,19 +161,6 @@
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
-;; Commenting Code
-(require 'evil-leader)
-(global-evil-leader-mode)
-(evil-leader/set-key
-  "ci" 'evilnc-comment-or-uncomment-lines
-  "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
-  "ll" 'evilnc-quick-comment-or-uncomment-to-the-line
-  "cc" 'evilnc-copy-and-comment-lines
-  "cp" 'evilnc-comment-or-uncomment-paragraphs
-  "cr" 'comment-or-uncomment-region
-  "cv" 'evilnc-toggle-invert-comment-line-by-line
-  "\\" 'evilnc-comment-operator
-  )
 ;; Navigating Directories
 (require 'all-the-icons)
 (require 'neotree)
@@ -267,61 +183,4 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-;; Transparency
-(defun djcb-opacity-modify (&optional dec)
-  "modify the transparency of the emacs frame; if DEC is t,
-    decrease the transparency, otherwise increase it in 10%-steps"
-  (let* ((alpha-or-nil (frame-parameter nil 'alpha)) ; nil before setting
-	 (oldalpha (if alpha-or-nil alpha-or-nil 100))
-	 (newalpha (if dec (- oldalpha 10) (+ oldalpha 10))))
-    (when (and (>= newalpha frame-alpha-lower-limit) (<= newalpha 100))
-      (modify-frame-parameters nil (list (cons 'alpha newalpha))))))
-
-;; C-8 will increase opacity (== decrease transparency)
-;; C-9 will decrease opacity (== increase transparency
-;; C-0 will returns the state to normal
-(global-set-key (kbd "C-8") '(lambda()(interactive)(djcb-opacity-modify)))
-(global-set-key (kbd "C-9") '(lambda()(interactive)(djcb-opacity-modify t)))
-(global-set-key (kbd "C-0") '(lambda()(interactive)
-			       (modify-frame-parameters nil `((alpha . 100)))))
-
-;; CMAKE files
-;; Add cmake listfile names to the mode list.
-(setq load-path (cons (expand-file-name "cmake-mode") load-path))
-(require 'cmake-mode)
-(setq auto-mode-alist
-      (append
-       '(("CMakeLists\\.txt\\'" . cmake-mode))
-       '(("\\.cmake\\'" . cmake-mode))
-       auto-mode-alist))
-
-(autoload 'cmake-mode "cmake-mode.el" t)
-
-;; NativeScript Config and modes
-;; Autoclosing html tags on templates
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-;; Since templates are not full HTML we need angular mode
-(require 'ng2-mode)
-(add-hook 'tide-mode-hook 'ng2-html-mode)
-;; Typscript linting and autocomplete
-(require 'tide)
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
-  (company-mode +1))
-;; aligns annotation to the right hand side
-(setq company-tooltip-align-annotations t)
-;; formats the buffer before saving
-(add-hook 'before-save-hook 'tide-format-before-save)
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
-
-
 ;;; init.el ends here
